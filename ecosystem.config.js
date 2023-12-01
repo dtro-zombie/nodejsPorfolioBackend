@@ -7,9 +7,14 @@ module.exports = {
       ignore_watch: ['node_modules'],
       env: {
         NODE_ENV: 'development',
+        NODE_ENV: 'production',
+        DATA_BASE_NAME:'Porfolio',
+        DATA_BASE_HOST:'localhost',
+        DATA_BASE_PASSWORD:'root',
+        DATA_BASE_USER:'root',
       },
       env_production: {
-        NODE_ENV: 'production',
+       
       },
     },
   ],

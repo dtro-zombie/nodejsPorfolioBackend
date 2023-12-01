@@ -1,2 +1,20 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+ <h2>Registro</h2>
+  <form action="/auth/register" method="post">
+    <label for="usuario">Usuario:</label><br>
+    <input type="text" id="usuario" name="usuario"><br>
+
+    <label for="contrasena">Contraseña:</label><br>
+    <input type="password" id="contrasena" name="contrasena"><br><br>
+
+    <input type="submit" value="Registrarse">
+  </form>
+
+
+  <h2>Login</h2>
+  <form action="/iniciar_sesion" method="post">
+    <label for="usuario">Usuario:</label><br>
+    <input type="text" id="usuario" name="usuario"><br>
+    <label for="contrasena">Contraseña:</label><br>
+    <input type="password" id="contrasena" name="contrasena"><br><br>
+    <input type="submit" value="Iniciar Sesión">
+  </form>
