@@ -4,13 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const usuario = require('./models/usuario');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth.router')
 
 var app = express();
 
-const sequelize = require('./database/database');
+
 
 
 // view engine setup
@@ -27,6 +29,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth',authRouter);
 
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -42,5 +46,22 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+const sequelize = require('./database/database'); // Asegúrate de que este sea el archivo correcto que contiene la configuración de Sequelize
+const usuarioModel = require('./models/usuario'); // Asegúrate de que este sea el nombre correcto del archivo que contiene tu modelo de usuario
+
+async function arrancarBD() {
+  try {
+    await sequelize.sync({ force: true});
+    
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
+
+arrancarBD();
+
+
 
 module.exports = app;

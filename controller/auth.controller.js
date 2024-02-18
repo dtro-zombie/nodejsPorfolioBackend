@@ -2,61 +2,30 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwt_decode = require("jwt-decode");
 const authService = require("../service/auth.service")
-// const rolesController = require('../controller/rolcontroller')
-// const users = require("../models/usuario");
-// const Rol = require("../models/rol");
+const usersService = require('../service/users.service')
+
 
 
 exports.register = async (req, res) => {
-
-
-  const { usuario, email, clave, claveRepetida} = req.body;
-
-
-  if (usuario === "" || email === "") {
-    return res.status(404).json({ message: "Por favor rellenar campos" });
-  }
-
   try {
-    const usuarioExiste = await users.findOne({ where: { usuario } });
+    
+    const { usuario, email, contrasena } = req.body;
 
-    if (usuarioExiste) {
-      return res.status(404).json({ message: "Usuario existe" });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
+    const claveHash = await authService.encriptarContrasena(contrasena)
 
-  try {
-    const isEmailExist = await users.findOne({ where: { email } });
-    if (isEmailExist) {
-      return res.status(400).json({ error: "Email ya registrado" });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-
-  const claveHash = await encriptarContrasena(clave);
-
-  console.log(claveHash);
-  
-  try {
-    const newUsuario = await users.create({
-        usuario,
-        email,
-        clave: claveHash
-    });
+    await usersService.createUser(usuario,email,claveHash)
 
     //rol 1 es usuario comun
-    let rol = await Rol.findByPk(1);
+    // let rol = await Rol.findByPk(1);
 
-    if (rol) {
-      await newUsuario.addRol(rol);
-    }
-    
+    // if (rol) {
+    //   await newUsuario.addRol(rol);
+    // }
 
+    //TODO verificar que no exita el usuario
 
     return res.status(200).json({ message: "Usuario registrado" });
+  
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -188,20 +157,7 @@ async function actualizarRolesYTiempoToken(decodedToken) {
   }
 }
 
-async function encriptarContrasena(contrasena) {
-  try {
-    // Generar la sal
-    const salt = await bcrypt.genSalt(10);
 
-    // Generar el hash de la contraseña
-    const hash = await bcrypt.hash(contrasena, salt);
-
-    return hash;
-  } catch (error) {
-    console.error('Error al encriptar la contraseña:', error);
-    throw error;
-  }
-}
 
 
 //es admin para rutas

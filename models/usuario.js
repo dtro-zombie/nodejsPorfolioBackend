@@ -2,10 +2,6 @@ const Sequelize = require("sequelize");
 const sequelize = require("../database/database");
 
 
-const tarea = require('./tarea')
-// const rol = require('./rol')
-
-
 
 const {DataTypes}=require('sequelize')
 
@@ -41,20 +37,7 @@ const Usuario = sequelize.define('usuario', {
   timestamps: false
 });
 
-Usuario.hasMany(tarea,{
-    foreingKey: 'usuarioId',
-    sourceKey: 'id'
-})
 
-tarea.belongsTo(Usuario,{
-    foreignKey:'usuarioId',
-    targetKey:'id'
-})
-
-// const UsuarioRol = sequelize.define('usuario_rol', {},{timestamps:false});
-
-// Usuario.belongsToMany(rol, { through: UsuarioRol });
-// rol.belongsToMany(Usuario, { through: UsuarioRol });
 
 
 

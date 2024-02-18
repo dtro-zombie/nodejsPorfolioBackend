@@ -8,7 +8,7 @@ const authController = require('../controller/auth.controller')
 
 router.post("/register",[authMiddleware.validateRegister, authMiddleware.handleValidationResult], authController.register)
 
-router.post("/login",authController.login )
+router.post("/login",authController.login)
 
 
 module.exports = router;

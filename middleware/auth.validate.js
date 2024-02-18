@@ -6,11 +6,14 @@ const validateRegister = [
       .notEmpty().withMessage('El nombre de usuario es obligatorio')
       .isLength({ min: 5 }).withMessage('El nombre de usuario debe tener al menos 5 caracteres'),
     body('email')
-      .isEmpty().withMessage('El email es obligatorio')
-      .isEmail().withMessage('Ingrese un email válido'),
-    body('contrasena')
-      .isEmpty().withMessage('La contraseña es obligatoria')
-      .isLength({ min: 8 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+    .notEmpty().withMessage('El email es obligatorio')
+    .isEmail().withMessage('Ingrese un email válido'),
+      body('claveRepetida').custom((value, { req }) => {
+        if (value !== req.body.contrasena) {
+          throw new Error('Las contraseñas no coinciden');
+        }
+        return true;
+      })
   ];
 
 const handleValidationResult = (req, res, next) => {
